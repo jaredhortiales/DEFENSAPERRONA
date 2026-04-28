@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Defensa Perrona — Sistema Electoral BC</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0c14;--s1:#111320;--s2:#181b2e;--s3:#1e2238;
+  --bd:#2a2f4e;--bd2:#363c60;
+  --p:#6c63ff;--p2:#8b85ff;
+  --tx:#e8eaf5;--mu:#8890b5;--mu2:#5a6080;
+  --gr:#22c55e;--am:#f59e0b;
+  --f:'Segoe UI',system-ui,sans-serif;
+}
+html,body{min-height:100vh;background:var(--bg);color:var(--tx);font-family:var(--f)}
+
+header{background:var(--s1);border-bottom:1px solid var(--bd);padding:0 28px;
+  display:flex;align-items:center;gap:14px;height:60px;position:sticky;top:0;z-index:100}
+.logo-icon{width:34px;height:34px;background:var(--p);border-radius:9px;
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.logo-name{font-size:15px;font-weight:700}
+.logo-sub{font-size:10px;color:var(--mu);letter-spacing:.7px;text-transform:uppercase}
+.hbadge{margin-left:auto;background:var(--s2);border:1px solid var(--bd);
+  padding:3px 10px;border-radius:20px;font-size:10px;color:var(--mu);font-family:monospace}
+
+.hero{text-align:center;padding:48px 20px 36px;border-bottom:1px solid var(--bd);background:var(--s1)}
+.hero h1{font-size:32px;font-weight:800;letter-spacing:-1px;margin-bottom:8px}
+.hero h1 em{color:var(--p2);font-style:normal}
+.hero p{color:var(--mu);font-size:13px;max-width:400px;margin:0 auto 24px;line-height:1.6}
+.hero-stats{display:flex;justify-content:center;gap:28px;flex-wrap:wrap}
+.hs-n{font-size:24px;font-weight:700;color:var(--p2)}
+.hs-l{font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:.5px}
+
+main{max-width:1200px;margin:0 auto;padding:32px 18px 80px}
+
+/* MUNICIPIO BLOQUE */
+.mun-block{margin-bottom:40px}
+.mun-head{display:flex;align-items:center;gap:12px;margin-bottom:16px;padding-bottom:10px;
+  border-bottom:1px solid var(--bd)}
+.mun-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;
+  justify-content:center;font-size:15px;flex-shrink:0}
+.mun-title{font-size:16px;font-weight:700}
+.mun-sub{font-size:11px;color:var(--mu);margin-top:1px}
+.mun-count{margin-left:auto;background:var(--s2);border:1px solid var(--bd);
+  padding:3px 10px;border-radius:20px;font-size:10px;color:var(--mu);font-family:monospace}
+
+/* CARDS GRID */
+.cards{display:flex;flex-wrap:wrap;gap:12px}
+
+/* ACCESO CARD */
+.acard{
+  background:var(--s1);border:1px solid var(--bd);border-radius:14px;
+  overflow:hidden;transition:border-color .2s,transform .15s;
+  width:220px;flex-shrink:0;position:relative;
+}
+.acard:not(.disabled):hover{border-color:var(--bd2);transform:translateY(-2px)}
+.acard.active{border-color:var(--p);box-shadow:0 0 0 1px rgba(108,99,255,.12)}
+.acard.disabled{opacity:.38}
+
+.acard-head{padding:12px 14px 10px;border-bottom:1px solid var(--bd)}
+.dist-badge{display:inline-flex;align-items:center;gap:5px;margin-bottom:6px}
+.dist-num{background:var(--s2);border:1px solid var(--bd2);color:var(--mu);
+  font-size:10px;font-weight:700;font-family:monospace;padding:2px 7px;border-radius:6px}
+.acard.active .dist-num{background:rgba(108,99,255,.15);border-color:rgba(108,99,255,.35);color:var(--p2)}
+.atag{font-size:8px;font-weight:700;padding:1px 6px;border-radius:20px;
+  letter-spacing:.4px;text-transform:uppercase}
+.tag-live{background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.28);color:var(--gr)}
+.tag-soon{background:rgba(245,158,11,.1);border:1px solid rgba(245,158,11,.2);color:var(--am)}
+.acard-mun{font-size:13px;font-weight:600;margin-bottom:1px}
+.acard-dist{font-size:11px;color:var(--mu)}
+
+.acard-body{padding:10px 14px}
+.abtn-row{display:flex;flex-direction:column;gap:6px}
+.abtn{padding:8px 10px;border-radius:8px;border:none;font-family:var(--f);font-size:11px;
+  font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;
+  transition:.15s;text-decoration:none;width:100%}
+.abtn-ico{font-size:14px;line-height:1;flex-shrink:0}
+.abtn-txt{display:flex;flex-direction:column;gap:1px;text-align:left}
+.abtn-main{font-size:11px}
+.abtn-sub{font-size:9px;opacity:.7;letter-spacing:.2px}
+.abtn.sistema{background:rgba(108,99,255,.15);color:var(--p2);border:1px solid rgba(108,99,255,.28)}
+.abtn.sistema:hover{background:rgba(108,99,255,.25)}
+.abtn.ocr{background:rgba(34,197,94,.1);color:#4ade80;border:1px solid rgba(34,197,94,.25)}
+.abtn.ocr:hover{background:rgba(34,197,94,.2)}
+.abtn.off{background:var(--s2);color:var(--mu2);border:1px solid var(--bd);cursor:not-allowed;pointer-events:none}
+
+footer{border-top:1px solid var(--bd);text-align:center;padding:18px;color:var(--mu2);font-size:10px}
+@media(max-width:600px){
+  header{padding:0 12px}.hero h1{font-size:22px}
+  main{padding:20px 10px 60px}.acard{width:100%}.cards{flex-direction:column}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-icon">🛡️</div>
+  <div>
+    <div class="logo-name">Defensa Perrona</div>
+    <div class="logo-sub">Sistema Electoral · Baja California</div>
+  </div>
+  <div class="hbadge">BC · 17 DISTRITOS · 7 MUNICIPIOS</div>
+</header>
+
+<div class="hero">
+  <h1>Defensa <em>Perrona</em></h1>
+  <p>Plataforma de gestión electoral por municipio y distrito para Baja California</p>
+  <div class="hero-stats">
+    <div><div class="hs-n">17</div><div class="hs-l">Distritos</div></div>
+    <div><div class="hs-n">7</div><div class="hs-l">Municipios</div></div>
+    <div><div class="hs-n">2</div><div class="hs-l">Accesos activos</div></div>
+  </div>
+</div>
+
+<main id="main"></main>
+
+<footer>Defensa Perrona v1.0 &nbsp;·&nbsp; Uso exclusivo interno &nbsp;·&nbsp; Baja California 2026</footer>
+
+<script>
+const URLS = {
+  sistema:'https://script.google.com/macros/s/AKfycbypunFWV3fUUI89sLm5rOadhCIC7GYPfC0BMMNoP-L7RqYzLeNnmJ0ZipiQSrTeh29t/exec',
+  ocr:'https://script.google.com/macros/s/AKfycby_mhKpoWCsrvDpWzKLAB4pdyF4Z0tDZ7x6mdcKkzVZLZbfFpeVcqSf8yX4DqL8eyPc/exec'
+};
+
+// Estructura: municipio → distritos que lo componen
+// activo:true = ya tiene sistemas conectados (Dist 15)
+const MUNICIPIOS = [
+  {
+    id:'mexicali', nombre:'Mexicali', icon:'🌵', color:'#f59e0b',
+    distritos:[
+      {d:1, activo:false},
+      {d:2, activo:false},
+      {d:3, activo:false},
+      {d:4, activo:false},
+      {d:5, activo:false},
+    ]
+  },
+  {
+    id:'tijuana', nombre:'Tijuana', icon:'🏙️', color:'#6c63ff',
+    distritos:[
+      {d:6,  activo:false},
+      {d:7,  activo:false},
+      {d:8,  activo:false},
+      {d:9,  activo:false},
+      {d:10, activo:false},
+      {d:11, activo:false},
+      {d:12, activo:false},
+      {d:13, activo:false},
+      {d:14, activo:false},
+    ]
+  },
+  {
+    id:'tecate', nombre:'Tecate', icon:'🏔️', color:'#22c55e',
+    distritos:[
+      {d:6, activo:false},
+    ]
+  },
+  {
+    id:'ensenada', nombre:'Ensenada', icon:'🌊', color:'#38bdf8',
+    distritos:[
+      {d:15, activo:true,  urlSistema:URLS.sistema, urlOCR:URLS.ocr},
+      {d:16, activo:false},
+      {d:17, activo:false},
+    ]
+  },
+  {
+    id:'rosarito', nombre:'Playas de Rosarito', icon:'🏖️', color:'#f472b6',
+    distritos:[
+      {d:15, activo:true, urlSistema:URLS.sistema, urlOCR:URLS.ocr},
+    ]
+  },
+  {
+    id:'sanquintin', nombre:'San Quintín', icon:'🌾', color:'#a78bfa',
+    distritos:[
+      {d:17, activo:false},
+    ]
+  },
+  {
+    id:'sanfelipe', nombre:'San Felipe', icon:'⛵', color:'#fb923c',
+    distritos:[
+      {d:5,  activo:false},
+      {d:17, activo:false},
+    ]
+  },
+];
+
+const main = document.getElementById('main');
+
+MUNICIPIOS.forEach(mun => {
+  const block = document.createElement('div');
+  block.className = 'mun-block';
+
+  const activeCount = mun.distritos.filter(d=>d.activo).length;
+
+  block.innerHTML = `
+    <div class="mun-head">
+      <div class="mun-icon" style="background:${mun.color}22;border:1px solid ${mun.color}44">${mun.icon}</div>
+      <div>
+        <div class="mun-title">${mun.nombre}</div>
+        <div class="mun-sub">${mun.distritos.length} distrito${mun.distritos.length>1?'s':''} · ${activeCount} activo${activeCount!==1?'s':''}</div>
+      </div>
+      <div class="mun-count">${mun.distritos.length} DIST.</div>
+    </div>
+    <div class="cards" id="cards-${mun.id}"></div>`;
+
+  main.appendChild(block);
+
+  const cardsEl = document.getElementById('cards-' + mun.id);
+
+  mun.distritos.forEach(({d, activo, urlSistema, urlOCR}) => {
+    const card = document.createElement('div');
+    card.className = 'acard' + (activo ? ' active' : ' disabled');
+
+    const bS = activo
+      ? `<a href="${urlSistema}" target="_blank" class="abtn sistema">
+          <span class="abtn-ico">👤</span>
+          <span class="abtn-txt"><span class="abtn-main">Representantes</span><span class="abtn-sub">Sistema RG / RC</span></span>
+         </a>`
+      : `<div class="abtn off">
+          <span class="abtn-ico">👤</span>
+          <span class="abtn-txt"><span class="abtn-main">Representantes</span><span class="abtn-sub">Próximamente</span></span>
+         </div>`;
+
+    const bO = activo
+      ? `<a href="${urlOCR}" target="_blank" class="abtn ocr">
+          <span class="abtn-ico">🪪</span>
+          <span class="abtn-txt"><span class="abtn-main">Captura OCR</span><span class="abtn-sub">Lectura de INE</span></span>
+         </a>`
+      : `<div class="abtn off">
+          <span class="abtn-ico">🪪</span>
+          <span class="abtn-txt"><span class="abtn-main">Captura OCR</span><span class="abtn-sub">Próximamente</span></span>
+         </div>`;
+
+    card.innerHTML = `
+      <div class="acard-head">
+        <div class="dist-badge">
+          <span class="dist-num">DIST. ${String(d).padStart(2,'0')}</span>
+          <span class="atag ${activo?'tag-live':'tag-soon'}">${activo?'Activo':'Próximo'}</span>
+        </div>
+        <div class="acard-mun">${mun.nombre}</div>
+        <div class="acard-dist">Distrito local ${d}</div>
+      </div>
+      <div class="acard-body">
+        <div class="abtn-row">${bS}${bO}</div>
+      </div>`;
+
+    cardsEl.appendChild(card);
+  });
+});
+</script>
+</body>
+</html>
